@@ -1,5 +1,9 @@
 # AutoLoc
 
+## Objectif du projet
+
+AutoLoc est une plateforme de gestion de location de véhicules.
+
 ## Les acteurs
 
 - Client
