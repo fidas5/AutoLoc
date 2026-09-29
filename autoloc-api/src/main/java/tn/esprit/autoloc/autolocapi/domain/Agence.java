@@ -1,13 +1,14 @@
 package tn.esprit.autoloc.autolocapi.domain;
+import java.util.List;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 
 @Entity
 @Getter
@@ -26,4 +27,11 @@ public class Agence {
     private String adresse;
 
     private String telephone;
+
+
+    @OneToMany(mappedBy = "agence", cascade = CascadeType.ALL)
+    private Set<Employe> employes;
+
+    @OneToMany(mappedBy = "agence", cascade = CascadeType.ALL)
+    private Set<Vehicule> vehicules;
 }

@@ -1,13 +1,14 @@
 package tn.esprit.autoloc.autolocapi.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -19,9 +20,15 @@ public class Paiement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPaiement;
 
-    private String montant;
+    private BigDecimal montant;
+    private LocalDate datePaiement;
 
-    private String datePaiement;
 
-    private ModePaiement modePaiement;
+
+    @Enumerated(EnumType.STRING)
+    private ModePaiement ModePaiement;
+
+    @ManyToOne
+    @JsonIgnore
+    private Contrat contrat;
 }

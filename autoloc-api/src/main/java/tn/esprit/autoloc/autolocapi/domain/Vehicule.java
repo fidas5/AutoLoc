@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Set;
 
 @Entity
 @Table(name = "vehicule")
@@ -31,15 +32,27 @@ public class Vehicule {
     @Column(nullable = false, length = 50)
     private String modele;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
-    private CategorieVehicule categorie;
+
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal tarifJournalier;
 
+
+
+    // Vehicule
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length =20)
+    private CategorieVehicule categorie;
+
+    @Enumerated(EnumType.STRING)
     private StatutVehicule statut;
+
+    @ManyToOne
+    private Agence agence;
+
+    @OneToMany(mappedBy = "vehicule", cascade = CascadeType.ALL)
+    private Set<Maintenance> maintenances;
+
+    @OneToMany(mappedBy = "vehicule")
+    private Set<Reservation> reservations;
 
 }
