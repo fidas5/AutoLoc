@@ -16,7 +16,7 @@ import java.util.Set;
 public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idClient;
+    private Long id;
 
     private String nom;
 
@@ -32,5 +32,5 @@ public class Client {
 
 
     @OneToMany(mappedBy = "client")
-    private Set<Reservation> Reservations;
+    private Set<Reservation> reservations;
 }

@@ -1,5 +1,4 @@
 package tn.esprit.autoloc.autolocapi.domain;
-import java.util.List;
 
 import jakarta.persistence.*;
 
@@ -18,7 +17,7 @@ import lombok.Setter;
 public class Agence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idAgence;
+    private Long id;
 
     private String nom;
 

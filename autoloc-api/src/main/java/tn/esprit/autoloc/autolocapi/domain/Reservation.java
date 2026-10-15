@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -17,7 +16,7 @@ import java.util.Set;
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idReservation;
+    private Long id;
 
     private LocalDate dateDebut;
 
@@ -34,6 +33,6 @@ public class Reservation {
     private Vehicule vehicule;
 
     @Enumerated(EnumType.STRING)
-    private StatutReservation Statut;
+    private StatutReservation statut;
 
 }

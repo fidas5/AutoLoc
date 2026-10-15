@@ -18,7 +18,7 @@ import java.util.Set;
 public class Contrat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idContrat;
+    private Long id;
 
 
     private LocalDate dateSignature;
@@ -30,4 +30,6 @@ public class Contrat {
 
     @OneToOne(mappedBy = "contrat")
     private Reservation reservation;
+
+
 }
