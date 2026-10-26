@@ -15,6 +15,8 @@ import java.util.Set;
 public class Equipement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_equipement")
+
     private Long id;
 
     private String libelle;

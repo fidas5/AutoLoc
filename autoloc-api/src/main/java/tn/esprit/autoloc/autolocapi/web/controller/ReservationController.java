@@ -10,7 +10,7 @@ import tn.esprit.autoloc.autolocapi.service.IReservationService;
 
 
 @RestController
-@RequestMapping("/api/reservations")
+@RequestMapping("/reservations")
 @RequiredArgsConstructor
 public class ReservationController {
 

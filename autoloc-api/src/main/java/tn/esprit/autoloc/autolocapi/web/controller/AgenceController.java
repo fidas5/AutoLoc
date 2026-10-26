@@ -13,7 +13,7 @@ import tn.esprit.autoloc.autolocapi.domain.Agence;
 import tn.esprit.autoloc.autolocapi.service.IAgenceService;
 
 @RestController
-@RequestMapping("/api/agences")
+@RequestMapping("/agences")
 @RequiredArgsConstructor
 public class AgenceController {
 

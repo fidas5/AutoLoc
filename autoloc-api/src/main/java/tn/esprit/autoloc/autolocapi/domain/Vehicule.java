@@ -21,6 +21,8 @@ public class Vehicule {
 
     @Id
     @GeneratedValue(strategy = GenerationType. IDENTITY)
+    @Column(name = "idvehicule")
+
     private Long id;
 
     @Column(nullable = false, unique = true, length = 20)

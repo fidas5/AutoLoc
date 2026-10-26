@@ -11,7 +11,7 @@ import tn.esprit.autoloc.autolocapi.service.IClientService;
 
 
 @RestController
-@RequestMapping("/api/clients")
+@RequestMapping("/clients")
 @RequiredArgsConstructor
 public class ClientController {
 

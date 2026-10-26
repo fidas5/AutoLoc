@@ -11,7 +11,7 @@ import tn.esprit.autoloc.autolocapi.service.IEmployeService;
 
 
 @RestController
-@RequestMapping("/api/employes")
+@RequestMapping("/employes")
 @RequiredArgsConstructor
 public class EmployeController {
 

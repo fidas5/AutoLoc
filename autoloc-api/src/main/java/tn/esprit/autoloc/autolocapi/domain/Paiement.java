@@ -18,6 +18,8 @@ import java.time.LocalDate;
 public class Paiement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_paiement")
+
     private Long id;
 
     private BigDecimal montant;

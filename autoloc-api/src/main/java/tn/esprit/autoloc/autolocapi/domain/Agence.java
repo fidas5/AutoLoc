@@ -17,6 +17,8 @@ import lombok.Setter;
 public class Agence {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_agence")
+
     private Long id;
 
     private String nom;
