@@ -1,18 +1,20 @@
+
 package tn.esprit.autoloc.autolocapi.service;
 
-import tn.esprit.autoloc.autolocapi.domain.Reservation;
-
 import java.util.List;
-import java.util.Optional;
+
+import tn.esprit.autoloc.autolocapi.dto.ReservationRequestDTO;
+import tn.esprit.autoloc.autolocapi.dto.ReservationResponseDTO;
 
 public interface IReservationService {
-    Reservation create(Reservation reservation);
 
-    Reservation findById(Long id);
+    ReservationResponseDTO create(ReservationRequestDTO dto);
 
-    List<Reservation> findAll();
+    ReservationResponseDTO findById(Long id);
 
-    Reservation update(Long id, Reservation reservation);
+    List<ReservationResponseDTO> findAll();
+
+    ReservationResponseDTO update(Long id, ReservationRequestDTO dto);
 
     void deleteById(Long id);
 }

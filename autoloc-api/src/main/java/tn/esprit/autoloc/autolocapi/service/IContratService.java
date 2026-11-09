@@ -1,17 +1,20 @@
 package tn.esprit.autoloc.autolocapi.service;
 
-import tn.esprit.autoloc.autolocapi.domain.Contrat;
+
+import tn.esprit.autoloc.autolocapi.dto.ContratRequestDTO;
+import tn.esprit.autoloc.autolocapi.dto.ContratResponseDTO;
 
 import java.util.List;
 
 public interface IContratService {
-    Contrat create(Contrat contrat);
 
-    Contrat findById(Long id);
+    ContratResponseDTO create(ContratRequestDTO dto);
 
-    List<Contrat> findAll();
+    ContratResponseDTO findById(Long id);
 
-    Contrat update(Long id, Contrat contrat);
+    List<ContratResponseDTO> findAll();
+
+    ContratResponseDTO update(Long id, ContratRequestDTO dto);
 
     void deleteById(Long id);
 }

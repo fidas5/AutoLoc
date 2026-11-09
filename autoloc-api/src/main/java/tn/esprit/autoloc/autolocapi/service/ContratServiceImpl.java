@@ -1,69 +1,92 @@
 package tn.esprit.autoloc.autolocapi.service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import tn.esprit.autoloc.autolocapi.domain.Contrat;
+import tn.esprit.autoloc.autolocapi.dto.ContratRequestDTO;
+import tn.esprit.autoloc.autolocapi.dto.ContratResponseDTO;
 import tn.esprit.autoloc.autolocapi.exception.ResourceNotFoundException;
+import tn.esprit.autoloc.autolocapi.mapper.ContratMapper;
 import tn.esprit.autoloc.autolocapi.repository.IContratRepository;
-import java.math.BigDecimal;
+
 @Service
 @RequiredArgsConstructor
 public class ContratServiceImpl implements IContratService {
 
     private final IContratRepository contratRepository;
+    private final ContratMapper contratMapper;
 
     @Override
-    public Contrat create(Contrat contrat) {
-        if (contrat.getId() != null) {
-            throw new IllegalArgumentException(
-                    "Un nouveau contrat ne doit pas avoir d'identifiant");
-        }
+    public ContratResponseDTO create(ContratRequestDTO dto) {
 
-        if (contrat.getMontantTotal() != null
-                && contrat.getMontantTotal().compareTo(BigDecimal.ZERO) < 0) {            throw new IllegalArgumentException(
-                    "Le montant total du contrat ne peut pas être négatif");
-        }
+        verifierMontant(dto.getMontantTotal());
 
-        return contratRepository.save(contrat);
+        Contrat contrat = contratMapper.toEntity(dto);
+
+        Contrat saved = contratRepository.save(contrat);
+
+        return contratMapper.toResponseDTO(saved);
     }
 
     @Override
-    public Contrat findById(Long id) {
+    public ContratResponseDTO findById(Long id) {
+
+        Contrat contrat = rechercherContrat(id);
+
+        return contratMapper.toResponseDTO(contrat);
+    }
+
+    @Override
+    public List<ContratResponseDTO> findAll() {
+
+        return contratRepository.findAll()
+                .stream()
+                .map(contratMapper::toResponseDTO)
+                .toList();
+    }
+
+    @Override
+    public ContratResponseDTO update(Long id, ContratRequestDTO dto) {
+
+        Contrat existant = rechercherContrat(id);
+
+        verifierMontant(dto.getMontantTotal());
+
+        existant.setDateSignature(dto.getDateSignature());
+        existant.setMontantTotal(dto.getMontantTotal());
+        existant.setValide(dto.isValide());
+
+        Contrat updated = contratRepository.save(existant);
+
+        return contratMapper.toResponseDTO(updated);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+
+        Contrat existant = rechercherContrat(id);
+
+        contratRepository.delete(existant);
+    }
+
+    private Contrat rechercherContrat(Long id) {
+
         return contratRepository.findById(id)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Contrat", id));
     }
 
-    @Override
-    public List<Contrat> findAll() {
-        return contratRepository.findAll();
-    }
+    private void verifierMontant(BigDecimal montant) {
 
-    @Override
-    public Contrat update(Long id, Contrat contrat) {
-        Contrat existant = findById(id);
+        if (montant != null
+                && montant.compareTo(BigDecimal.ZERO) < 0) {
 
-        if (contrat.getMontantTotal() != null
-                && contrat.getMontantTotal().compareTo(BigDecimal.ZERO) < 0) {            throw new IllegalArgumentException(
+            throw new IllegalArgumentException(
                     "Le montant total du contrat ne peut pas être négatif");
         }
-
-        existant.setMontantTotal(contrat.getMontantTotal());
-
-        // Recopier ici les autres attributs modifiables du contrat,
-        // sans toucher à l'identifiant ni à la collection de paiements.
-
-        return contratRepository.save(existant);
-    }
-
-    @Override
-    public void deleteById(Long id) {
-        if (!contratRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Contrat", id);
-        }
-
-        contratRepository.deleteById(id);
     }
 }

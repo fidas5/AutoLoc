@@ -1,39 +1,70 @@
 package tn.esprit.autoloc.autolocapi.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.Instant;
+import java.util.LinkedHashMap;
 import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // 404 - Ressource introuvable
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleNotFound(
             ResourceNotFoundException ex) {
 
-        Map<String, Object> body = Map.of(
-                "statut", 404,
-                "message", ex.getMessage(),
-                "horodatage", Instant.now().toString()
+        return buildResponse(
+                HttpStatus.NOT_FOUND,
+                ex.getMessage()
         );
-
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 
+    // 400 - Règle métier non respectée
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleBadRequest(
             IllegalArgumentException ex) {
 
-        Map<String, Object> body = Map.of(
-                "statut", 400,
-                "message", ex.getMessage(),
-                "horodatage", Instant.now().toString()
+        return buildResponse(
+                HttpStatus.BAD_REQUEST,
+                ex.getMessage()
         );
+    }
 
-        return ResponseEntity.badRequest().body(body);
+    // 400 - Erreur de validation des DTO
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, Object>> handleValidation(
+            MethodArgumentNotValidException ex) {
+
+        String message = ex.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(error -> error.getField()
+                        + " : " + error.getDefaultMessage())
+                .findFirst()
+                .orElse("Données invalides");
+
+        return buildResponse(
+                HttpStatus.BAD_REQUEST,
+                message
+        );
+    }
+
+    private ResponseEntity<Map<String, Object>> buildResponse(
+            HttpStatus status,
+            String message) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+
+        body.put("statut", status.value());
+        body.put("message", message);
+        body.put("horodatage", Instant.now().toString());
+
+        return ResponseEntity.status(status).body(body);
     }
 }

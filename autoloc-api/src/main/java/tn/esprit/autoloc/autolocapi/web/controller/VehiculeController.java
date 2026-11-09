@@ -1,14 +1,18 @@
+
 package tn.esprit.autoloc.autolocapi.web.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.autoloc.autolocapi.domain.Vehicule;
-import tn.esprit.autoloc.autolocapi.service.IVehiculeService;
 
+import tn.esprit.autoloc.autolocapi.dto.VehiculeRequestDTO;
+import tn.esprit.autoloc.autolocapi.dto.VehiculeResponseDTO;
+import tn.esprit.autoloc.autolocapi.service.IVehiculeService;
 
 @RestController
 @RequestMapping("/vehicules")
@@ -18,37 +22,40 @@ public class VehiculeController {
     private final IVehiculeService vehiculeService;
 
     @PostMapping
-    public ResponseEntity<Vehicule> create(
-            @RequestBody Vehicule vehicule) {
+    public ResponseEntity<VehiculeResponseDTO> create(
+            @Valid @RequestBody VehiculeRequestDTO dto) {
+
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(vehiculeService.create(vehicule));
+                .body(vehiculeService.create(dto));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Vehicule> findById(
+    public ResponseEntity<VehiculeResponseDTO> findById(
             @PathVariable Long id) {
-        return ResponseEntity.ok(
-                vehiculeService.findById(id));
+
+        return ResponseEntity.ok(vehiculeService.findById(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<Vehicule>> findAll() {
-        return ResponseEntity.ok(
-                vehiculeService.findAll());
+    public ResponseEntity<List<VehiculeResponseDTO>> findAll() {
+
+        return ResponseEntity.ok(vehiculeService.findAll());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Vehicule> update(
+    public ResponseEntity<VehiculeResponseDTO> update(
             @PathVariable Long id,
-            @RequestBody Vehicule vehicule) {
-        return ResponseEntity.ok(
-                vehiculeService.update(id, vehicule));
+            @Valid @RequestBody VehiculeRequestDTO dto) {
+
+        return ResponseEntity.ok(vehiculeService.update(id, dto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(
             @PathVariable Long id) {
+
         vehiculeService.deleteById(id);
+
         return ResponseEntity.noContent().build();
     }
 }
